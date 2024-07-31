@@ -13,6 +13,7 @@
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 #include <pcl/filters/voxel_grid.h>
+#include <pcl/io/pcd_io.h>
 
 #include <rclcpp/rclcpp.hpp>
 #include <sensor_msgs/msg/point_cloud2.hpp>
@@ -460,6 +461,15 @@ int main(int argc, char **argv)
     }
     delete[]  pc_data;
   }
+
+  // Save the map
+  pcl::io::savePCDFile(
+      "/tmp/kitti_map.pcd",
+      whole_map_msg,
+      Eigen::Vector4f::Zero(),
+      Eigen::Quaternionf::Identity(),
+      true/* binary_mode is true */);
+  std::cout << "Saved PCD file to /tmp/kitti_map.pcd" << std::endl;
 
   // Publish processed data
   rclcpp::init(argc, argv);

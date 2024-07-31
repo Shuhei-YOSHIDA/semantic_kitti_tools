@@ -5,6 +5,7 @@ my utility
 
 ## ground_truth_map
 * Make pointcloud map based on velodyne and pose data(provided by official, and made by SuMa)
+* Save the map into `/tmp/kitti_map.pcd`
 
 ### usage
 ```
