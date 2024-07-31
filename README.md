@@ -12,3 +12,6 @@ my utility
 $ ros2 run semantic_kitti_tools ground_truth_map <target_sequence_dir> <calibration_dir>
 $ ros2 run semantic_kitti_tools ground_truth_map ~/semantic_kitti/05  ~/data_odometry_calib/dataset/sequence/05 # example
 ```
+
+## make_rosbag2
+* Make bag file for ROS2

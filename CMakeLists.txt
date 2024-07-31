@@ -23,14 +23,19 @@ find_package(pcl_conversions REQUIRED)
 find_package(pcl_ros REQUIRED)
 find_package(Eigen3 REQUIRED)
 find_package(tf2_eigen REQUIRED)
+find_package(rosbag2_cpp REQUIRED)
 
-add_executable(ground_truth_map src/ground_truth_map.cpp)
+add_executable(ground_truth_map
+    src/ground_truth_map.cpp
+    src/semantic_kitti_tools/util.cpp
+)
 target_include_directories(ground_truth_map
   PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/include>
   $<BUILD_INTERFACE:${EIGEN3_INCLUDE_DIR}>
   $<BUILD_INTERFACE:${PCL_INCLUDE_DIR}>
-  $<INSTALL_INTERFACE:include>)
+  $<INSTALL_INTERFACE:include>
+  include)
 ament_target_dependencies(ground_truth_map
   rclcpp
   geometry_msgs
@@ -44,6 +49,36 @@ ament_target_dependencies(ground_truth_map
 install(TARGETS
   ground_truth_map
   DESTINATION lib/${PROJECT_NAME})
+
+add_executable(make_rosbag2
+    src/make_rosbag2.cpp
+    src/semantic_kitti_tools/util.cpp
+)
+target_include_directories(make_rosbag2
+  PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/include>
+  $<BUILD_INTERFACE:${EIGEN3_INCLUDE_DIR}>
+  $<BUILD_INTERFACE:${PCL_INCLUDE_DIR}>
+  $<INSTALL_INTERFACE:include/${PROJECT_NAME}>
+  include)
+ament_target_dependencies(make_rosbag2
+  rclcpp
+  geometry_msgs
+  sensor_msgs
+  nav_msgs
+  visualization_msgs
+  pcl_conversions
+  pcl_ros
+  tf2_eigen
+  rosbag2_cpp
+)
+install(TARGETS
+  make_rosbag2
+  DESTINATION lib/${PROJECT_NAME})
+
+install(DIRECTORY include/ DESTINATION include/${PROJECT_NAME})
+
+
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
