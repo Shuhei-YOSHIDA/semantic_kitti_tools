@@ -203,7 +203,7 @@ int main(int argc, char **argv)
       {
         c = color_map.at(labels[i]);
       }
-      catch(std::exception e)
+      catch(std::exception &e)
       {
         std::cout << "ERROR i: " << i << ", invalid label num : " << labels[i] << std::endl;
         exit(-1);
