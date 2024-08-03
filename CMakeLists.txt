@@ -18,6 +18,7 @@ find_package(geometry_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
 find_package(visualization_msgs REQUIRED)
+find_package(tf2_msgs REQUIRED)
 find_package(PCL REQUIRED)
 find_package(pcl_conversions REQUIRED)
 find_package(pcl_ros REQUIRED)
@@ -67,6 +68,7 @@ ament_target_dependencies(make_rosbag2
   sensor_msgs
   nav_msgs
   visualization_msgs
+  tf2_msgs
   pcl_conversions
   pcl_ros
   tf2_eigen

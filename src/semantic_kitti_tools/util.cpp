@@ -3,6 +3,7 @@
  */
 
 #include "semantic_kitti_tools/util.hpp"
+#include <chrono>
 //#include "semantic_kitti_tools/param.hpp"
 
 namespace semantic_kitti_tools
@@ -181,6 +182,39 @@ void LoadLiDARCalibFromFile(
         0, 0, 0, 1;
 }
 
+void LoadTriggerTimeFromFile(
+    const std::string& textfile_path,
+    std::vector<long>& nanosecond_list,
+    long& line_count)
+{
+  // Load text file and read a line representing trigger time[s]
+  // It is Converted to nanosecond unit
+  std::ifstream times_file(textfile_path);
 
+  if (!times_file)
+  {
+    std::cerr << "Failed to open the times-file" << std::endl;
+    exit(-1);
+  }
+
+  // Get the number of lines and reserve memory
+  line_count = 0;
+  std::string line;
+
+  while (std::getline(times_file, line)) line_count++;
+  times_file.clear();
+  times_file.seekg(0);
+
+  nanosecond_list.clear();
+  nanosecond_list.reserve(line_count);
+
+  // Load trigger times
+  while (std::getline(times_file, line))
+  {
+    double second = std::stod(line);
+    long nanosecond = second*1000000000;
+    nanosecond_list.push_back(nanosecond);
+  }
+}
 
 } // namespace semantic_kitti_tools

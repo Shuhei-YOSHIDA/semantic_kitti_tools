@@ -39,7 +39,12 @@ void LoadLiDARCalibFromFile(
     const std::string& textfile_path,
     Eigen::Matrix4d& tr);
 
-} // namespace semantic_kitti_tool
+void LoadTriggerTimeFromFile(
+    const std::string& textfile_path,
+    std::vector<long>& nanosecond_list,
+    long& line_count);
+
+} // namespace semantic_kitti_tools
 
 
 #endif /* ifndef INCLUDE_SEMANTIC_KITTI_TOOLS_UTIL_H */

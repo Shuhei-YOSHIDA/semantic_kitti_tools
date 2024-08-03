@@ -64,8 +64,8 @@ int main(int argc, char **argv)
   for (int pose_i = 0; pose_i < line_count; pose_i++) // loop for each pose on sequence
   {
     if (pose_i == 0 || pose_i%(line_count/10)==0 || pose_i == line_count-1)
-      std::cout << pose_i << "/" << line_count << std::endl; // check
-                                                             //
+      std::cout << pose_i << "/" << line_count << std::endl; // check progress
+
     std::string point_cloud_filename = dataset_path + "/velodyne/";
     std::string label_filename= dataset_path + "/labels/";
     std::string filename = std::to_string(pose_i);
