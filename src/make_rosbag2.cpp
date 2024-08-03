@@ -137,6 +137,10 @@ int main(int argc, char **argv)
   writer->create_topic(tf_static_meta);
 
   // Publish static tf
+  rclcpp::Time first_stamp_for_static;
+  if (nanosecond_list[0] > 0) first_stamp_for_static = rclcpp::Time(nanosecond_list[0]);
+  else first_stamp_for_static = rclcpp::Time(1); // For ROS1 bag conversion
+
   geometry_msgs::msg::TransformStamped static_tf_msg;
   Eigen::Vector3d st_v(tr(0, 3), tr(1, 3), tr(2, 3));
   Eigen::Quaterniond  st_q(Eigen::Matrix3d(tr.block(0, 0, 3, 3)));
@@ -144,12 +148,12 @@ int main(int argc, char **argv)
   static_tf_msg.transform.rotation = tf2::toMsg(st_q);
   static_tf_msg.header.frame_id = "base_link";
   static_tf_msg.child_frame_id = "velodyne";
-  static_tf_msg.header.stamp = rclcpp::Time(nanosecond_list[0]);
+  static_tf_msg.header.stamp = rclcpp::Time(first_stamp_for_static);
   //@note tf_static msg should be kept, for example, static_transform_broadcaster?
   tf2_msgs::msg::TFMessage tf2_msg;
   tf2_msg.transforms.push_back(static_tf_msg);
   writer->write<tf2_msgs::msg::TFMessage>(
-      tf2_msg, "/tf_static", rclcpp::Time(nanosecond_list[0]));
+      tf2_msg, "/tf_static", rclcpp::Time(first_stamp_for_static));
 
 
   // Make bagfile with loading points and label files
