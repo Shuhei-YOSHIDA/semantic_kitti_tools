@@ -1,6 +1,6 @@
 /**
  * @file make_rosbag2.cpp
- * @todo Write image to bag
+ * @todo Write other data to bag?
  */
 
 #include <fstream>
