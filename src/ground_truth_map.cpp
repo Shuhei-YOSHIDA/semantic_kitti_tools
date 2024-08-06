@@ -100,7 +100,21 @@ int main(int argc, char **argv)
     {
       // Remove points which label is static object such as building or load
       uint16_t label = labels[p_i];
-      if (label != 40 /* road class */ && label != 50 /* building class */) continue;
+      if (label != 40 && /* road class */
+          label != 44 && /* parking class */
+          label != 48 && /* sidewark class */
+          label != 49 && /* other-ground class */
+          label != 50 && /* building class */
+          label != 51 && /* fence class */
+          label != 52 && /* other-structure class */
+          label != 60 && /* lane-marking class */
+          label != 70 && /* vegetation class */
+          label != 71 && /* trunk class */
+          label != 72 && /* terrain class */
+          label != 80 && /* pole class */
+          label != 81 && /* traffic-sign class */
+          label != 99  /* other-object class */
+          ) continue;
 
       // Convert points and set color based on its label
       Eigen::Vector4d v(pc_data[p_i][0], pc_data[p_i][1], pc_data[p_i][2], 1);

@@ -6,6 +6,7 @@ ROS 2 Utility for [Semantic KITTI Dataset](https://www.semantic-kitti.org/)
 
 ## ground_truth_map
 * Make pointcloud map based on velodyne and pose data(provided by official, and made by SuMa)
+* Only points with static-object labels are used.
 * Save the map into `/tmp/kitti_map.pcd`
 
 ### usage
