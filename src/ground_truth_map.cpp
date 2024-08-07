@@ -14,6 +14,7 @@
 #include <pcl/point_types.h>
 #include <pcl/filters/voxel_grid.h>
 #include <pcl/io/pcd_io.h>
+#include <pcl/common/transforms.h>
 
 #include <rclcpp/rclcpp.hpp>
 #include <sensor_msgs/msg/point_cloud2.hpp>
@@ -28,8 +29,8 @@ using namespace semantic_kitti_tools;
 
 void usage()
 {
-  std::cerr << "[usage] $ ros2 run semantic_kitti_tools ground_truth_map <target_sequence_dir> <calibration_dir>" << std::endl
-            << "[ex] $ ros2 run semantic_kitti_tools ground_truth_map ~/semantic_kitti/05  ~/data_odometry_calib/dataset/sequence/05" << std::endl;
+  std::cerr << "[usage] $ ros2 run semantic_kitti_tools ground_truth_map <target_sequence_dir> <calibration_dir> <is_rot_to_velodyne_coord>" << std::endl
+            << "[ex] $ ros2 run semantic_kitti_tools ground_truth_map ~/semantic_kitti/05  ~/data_odometry_calib/dataset/sequence/05 false" << std::endl;
 }
 
 int main(int argc, char **argv)
@@ -45,6 +46,13 @@ int main(int argc, char **argv)
   }
   std::string dataset_path = pure_args[1];
   std::string calib_path = pure_args[2];
+  bool is_rot_to_velodyne_coord = false;
+  if (pure_args.size() >= 4)
+  {
+    is_rot_to_velodyne_coord = (pure_args[3]=="true") ? true : false;
+  }
+  std::cout << "is_rot_to_velodyne_coord is set to: "
+    << (is_rot_to_velodyne_coord ? "true" : "false") << std::endl;
 
   // Load pose file
   std::string pose_filepath = dataset_path + "/poses.txt";
@@ -161,6 +169,12 @@ int main(int argc, char **argv)
     delete[] pc_data;
   }
   sensor_msgs::msg::PointCloud2 whole_map_msg;
+  if (is_rot_to_velodyne_coord)
+  {
+    Eigen::Matrix4f inv_tr(tr.inverse().cast<float>());
+    pcl::transformPointCloud(whole_map, whole_map, inv_tr);
+  }
+
   pcl::toROSMsg(whole_map, whole_map_msg);
   whole_map_msg.header.frame_id = "map";
 
@@ -226,6 +240,11 @@ int main(int argc, char **argv)
       p.g = c[1];
       p.b = c[2];
       points.push_back(p);
+    }
+    if (is_rot_to_velodyne_coord)
+    {
+      Eigen::Matrix4f inv_tr(tr.inverse().cast<float>());
+      pcl::transformPointCloud(points, points, inv_tr);
     }
     pcl::toROSMsg(points, pc_msg);
     pc_msg.header.frame_id = "map";

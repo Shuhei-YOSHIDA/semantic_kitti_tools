@@ -8,11 +8,14 @@ ROS 2 Utility for [Semantic KITTI Dataset](https://www.semantic-kitti.org/)
 * Make pointcloud map based on velodyne and pose data(provided by official, and made by SuMa)
 * Only points with static-object labels are used.
 * Save the map into `/tmp/kitti_map.pcd`
+* In Semantic KITTI dataset, central coodinate system is center camera, and the axes are x: right dir, y: down dir, and z: front dir.
+    - As default, the whole map is created based on centrol coordinates at time 0.
+    - By option `is_rot_to_velodyen_coord`, the whole map is rotated to velodyne coordsystem, where the x is front dir, y is left dir, and z is up dir.
 
 ### usage
 ```
-$ ros2 run semantic_kitti_tools ground_truth_map <target_sequence_dir> <calibration_dir>
-$ ros2 run semantic_kitti_tools ground_truth_map ~/semantic_kitti/05  ~/data_odometry_calib/dataset/sequence/05 # example
+$ ros2 run semantic_kitti_tools ground_truth_map <target_sequence_dir> <calibration_dir> <is_rot_to_velodyne_coord>
+$ ros2 run semantic_kitti_tools ground_truth_map ~/semantic_kitti/05  ~/data_odometry_calib/dataset/sequence/05 false # example
 ```
 
 ## make_rosbag2
