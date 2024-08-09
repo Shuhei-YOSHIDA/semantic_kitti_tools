@@ -32,11 +32,10 @@ add_executable(ground_truth_map
 )
 target_include_directories(ground_truth_map
   PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/include>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/include
   $<BUILD_INTERFACE:${EIGEN3_INCLUDE_DIR}>
   $<BUILD_INTERFACE:${PCL_INCLUDE_DIR}>
-  $<INSTALL_INTERFACE:include>
-  include)
+  $<INSTALL_INTERFACE:include>)
 ament_target_dependencies(ground_truth_map
   rclcpp
   geometry_msgs
